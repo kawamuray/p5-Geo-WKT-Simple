@@ -1,0 +1,27 @@
+This is Perl module Geo::WKT::Simple.
+
+INSTALLATION
+
+Geo::WKT::Simple installation is straightforward. If your CPAN shell is set up,
+you should just be able to do
+
+    % cpan Geo::WKT::Simple
+
+Download it, unpack it, then build it as per the usual:
+
+    % perl Makefile.PL
+    % make && make test
+
+Then install it:
+
+    % make install
+
+DOCUMENTATION
+
+Geo::WKT::Simple documentation is available as in POD. So you can do:
+
+    % perldoc Geo::WKT::Simple
+
+to read the documentation online with your favorite pager.
+
+Yuto KAWAMURA(kawamuray)
