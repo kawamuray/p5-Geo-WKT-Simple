@@ -134,7 +134,7 @@ __END__
 
 =head1 NAME
 
-Geo::WKT::Simple - Perl extension for parse Well Known Text format string.
+Geo::WKT::Simple - Perl extension for parsing Well Known Text format string.
 
 =head1 SYNOPSIS
 
