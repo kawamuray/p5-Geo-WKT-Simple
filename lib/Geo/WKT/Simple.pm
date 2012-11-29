@@ -7,65 +7,61 @@ use parent 'Exporter';
 
 our $VERSION = '0.01';
 
-our @EXPORT = qw/
-  wkt_parse_point
-  wkt_parse_polygon
-  wkt_parse_geomcol
-  wkt_parse_linestring
-  wkt_parse_multilinestring
-  wkt_parse_polygon
-  wkt_parse_multipolygon
-  wkt_parse_geometrycollection
-  wkt_parse
-  wkt_make_point
-  wkt_make_multipoint
-  wkt_make_linestring
-  wkt_make_polygon
-  wkt_make_linestring
-  wkt_make_multilinestring
-  wkt_make_multipolygon
-  wkt_make_optimal
-  wkt_make_geometrycollection
-  wkt_make
-/;
-
-use Data::Dumper;
-sub p { warn Dumper(@_) }
+our @EXPORT;
+our %EXPORT_TAGS = (
+    all => \@EXPORT,
+    parse => [qw/
+      wkt_parse_point
+      wkt_parse_polygon
+      wkt_parse_geomcol
+      wkt_parse_linestring
+      wkt_parse_multilinestring
+      wkt_parse_polygon
+      wkt_parse_multipolygon
+      wkt_parse_geometrycollection
+      wkt_parse
+    /],
+    make => [qw/
+      wkt_make_point
+      wkt_make_multipoint
+      wkt_make_linestring
+      wkt_make_polygon
+      wkt_make_linestring
+      wkt_make_multilinestring
+      wkt_make_multipolygon
+      wkt_make_optimal
+      wkt_make_geometrycollection
+      wkt_make
+    /],
+);
+@EXPORT = map { @{ $_ } } @EXPORT_TAGS{qw/ parse make /};
 
 sub wkt_parse_point {
-#    warn $_[0];
     $_[0] =~ /^point\(\s*([\w\.]+)\s+([\w\.]+)\)$/i
 }
 
 sub _parse_points_list {
-#    warn "parse_points_list: $_[0]";
     map {
         [ split /\s+/, $_, 2 ]
     } $_[0] =~ /([\w\.]+\s+[\w\.]+)(?:,\s*)?/g
 }
 
 sub _parse_points_group {
-#     warn "parse_points_group: $_[0]";
     map {
         [ _parse_points_list($_) ]
     } $_[0] =~ /\(((?:[\w\.]+\s+[\w\.]+(?:,\s*)?)*)\)(?:,\s*)?/g
 }
 
 sub _parse_points_group_list {
-#     warn "parse_points_group_list: $_[0]";
     map {
         [ _parse_points_group($_) ]
     } $_[0] =~ /\(((?:\((?:[\w\.]+\s+[\w\.]+(?:,\s*)?)*\)(?:,\s*)?)*)\)(?:,\s*)?/g
 }
 
 sub wkt_parse_linestring {
-    my @points = _parse_points_list(
+    _parse_points_list(
         $_[0] =~ /^linestring\((.+)\)$/i,
     );
-
-#     p \@points;
-
-    @points;
 }
 
 sub wkt_parse_multilinestring {
@@ -79,8 +75,6 @@ sub wkt_parse_polygon {
         $_[0] =~ /^polygon\((.+)\)$/i
     );
 
-#     p \@groups;
-
     @groups;
 }
 
@@ -88,8 +82,6 @@ sub wkt_parse_multipolygon {
     my @groups_list = _parse_points_group_list(
         $_[0] =~ /^multipolygon\((.+)\)$/i
     );
-
-#     p \@groups_list;
 
     @groups_list;
 }
