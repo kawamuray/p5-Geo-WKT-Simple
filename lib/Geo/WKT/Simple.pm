@@ -126,8 +126,7 @@ sub _cat {
 }
 
 sub _catlinestring {
-    local $" = ' ';
-    _cat( map { "@$_" } @_ )
+    _cat( map { "$_->[0] $_->[1]" } @_ )
 }
 
 sub _catpolygon {
