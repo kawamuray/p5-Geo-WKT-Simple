@@ -199,6 +199,14 @@ Geo::WKT returns results as a Geo::* instances which represents each type of geo
 
 =item - I need to support MULTI(LINESTRING|POLYGON).
 
+=head2 Caution
+
+This module does not check the syntax of WKT.
+
+Just apply regular expression to data which can extract elements from B<right> formatted WKT.
+
+So you must take the responsibility for the input datas.
+
 =back
 
 =head1 AUTHOR
