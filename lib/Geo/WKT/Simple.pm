@@ -160,12 +160,12 @@ sub wkt_make_geometrycollection {
 }
 
 sub wkt_make {
-    my ($type, $data) = @_;
+    my $type = shift;
     return if $type !~ $ALLTYPES;
 
     do {
         no strict 'refs';
-        &{ 'wkt_make_'.lc($type) }(@$data);
+        &{ 'wkt_make_'.lc($type) }(@_);
     };
 }
 
