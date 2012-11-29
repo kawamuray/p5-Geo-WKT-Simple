@@ -17,17 +17,17 @@ our @EXPORT = qw/
   wkt_parse_multipolygon
   wkt_parse_geometrycollection
   wkt_parse
+  wkt_make_point
+  wkt_make_multipoint
+  wkt_make_linestring
+  wkt_make_polygon
+  wkt_make_linestring
+  wkt_make_multilinestring
+  wkt_make_multipolygon
+  wkt_make_optimal
+  wkt_make_geometrycollection
+  wkt_make
 /;
-#   wkt_point
-#   wkt_multipoint
-#   wkt_linestring
-#   wkt_polygon
-#   wkt_linestring
-#   wkt_multilinestring
-#   wkt_multipolygon
-#   wkt_optimal
-#   wkt_geomcollection
-# /;
 
 use Data::Dumper;
 sub p { warn Dumper(@_) }
@@ -129,38 +129,54 @@ sub wkt_parse {
     };
 }
 
-sub _pcat {
-    map { "@$_" } @_
-}
-
 sub _cat {
     '('.join(', ', @_).')'
 }
 
 sub _catlinestring {
-    _cat( _pcat(@_) )
+    local $" = ' ';
+    _cat( map { "@$_" } @_ )
 }
 
 sub _catpolygon {
-    _cat( map { [ _pcat(@$_) ] } @_ );
+    _cat( map { _catlinestring(@$_) } @_ )
 }
 
-sub wkt_point {
-    'POINT'._cat(@_)
+sub wkt_make_point {
+    'POINT'._cat("$_[0] $_[1]")
 }
 
-sub wkt_linestring {
+sub wkt_make_linestring {
     'LINESTRING'._catlinestring(@_)
 }
 
-sub wkt_multilinestring {
-    'MULTILINESTRING'._cat(
-        map {
-            _cat( map { "@{ $_ }" } @$_ )
-        } @_
+sub wkt_make_multilinestring {
+    'MULTILINESTRING'._catpolygon(@_)
+}
+
+sub wkt_make_polygon {
+    'POLYGON'._catpolygon(@_)
+}
+
+sub wkt_make_multipolygon {
+    'MULTIPOLYGON'._cat(
+        map { _catpolygon(@$_) } @_
     )
 }
 
+sub wkt_make_geometrycollection {
+    'GEOMETRYCOLLECTION'._cat( map { wkt_make(@$_) } @_ )
+}
+
+sub wkt_make {
+    my ($type, $data) = @_;
+    return if $type !~ $ALLTYPES;
+
+    do {
+        no strict 'refs';
+        &{ 'wkt_make_'.lc($type) }(@$data);
+    };
+}
 
 1;
 __END__
