@@ -29,7 +29,6 @@ our %EXPORT_TAGS = (
       wkt_make_linestring
       wkt_make_multilinestring
       wkt_make_multipolygon
-      wkt_make_optimal
       wkt_make_geometrycollection
       wkt_make
     /],
