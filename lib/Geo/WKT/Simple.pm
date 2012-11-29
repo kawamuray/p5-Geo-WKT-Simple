@@ -12,8 +12,6 @@ our %EXPORT_TAGS = (
     all => \@EXPORT,
     parse => [qw/
       wkt_parse_point
-      wkt_parse_polygon
-      wkt_parse_geomcol
       wkt_parse_linestring
       wkt_parse_multilinestring
       wkt_parse_polygon
@@ -23,11 +21,9 @@ our %EXPORT_TAGS = (
     /],
     make => [qw/
       wkt_make_point
-      wkt_make_multipoint
-      wkt_make_linestring
-      wkt_make_polygon
       wkt_make_linestring
       wkt_make_multilinestring
+      wkt_make_polygon
       wkt_make_multipolygon
       wkt_make_geometrycollection
       wkt_make
