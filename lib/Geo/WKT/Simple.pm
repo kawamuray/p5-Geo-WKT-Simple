@@ -169,11 +169,50 @@ __END__
 
 =head1 NAME
 
-Geo::WKT::Simple - Perl extension for parsing Well Known Text format string.
+Geo::WKT::Simple - Simple utils to parse/build Well Known Text(WKT) format string.
 
 =head1 SYNOPSIS
 
-  use Geo::WKT::Simple;
+  use Geo::WKT::Simple;           # Export all
+  or
+  use Geo::WKT::Simple ':parse';  # Only WKT parser functions
+  or
+  use Geo::WKT::Simple ':make';   # Only WKT builder functions
+
+  # WKT POINT
+  wkt_parse_point('POINT(10 20)');                  #=> (10 20)
+  wkt_make_point(10, 20);                           #=> POINT(10 20)
+
+  # WKT LINESTRING
+  wkt_parse_linestring('LINESTRING(1 2, 3 4)');     #=> ([ 1, 2 ], [ 3, 4 ])
+  wkt_make_linestring([ 1, 2 ], [ 3, 4 ]);          #=> LINESTRING(1 2, 3 4)
+
+  # WKT POLYGON
+  wkt_parse_polygon('POLYGON((1 2, 3 4, 5 6, 1 2), (1 2, 3 4, 5 6, 1 2))');
+  #=> (
+  #      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
+  #      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
+  #   )
+  wkt_make_polygon([
+      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
+      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
+  ]) #=> 'POLYGON((1 2, 3 4, 5 6, 1 2), (1 2, 3 4, 5 6, 1 2))'
+
+  # And like so on for (MULTI)LINESTRING|POLYGON
+
+  # WKT GEOMETRYCOLLECTION
+  wkt_parse_geometrycollection(
+      'GEOMETRYCOLLECTION(POINT(10 20), LINESTRING(10 20, 30 40))'
+  ); #=> ([ POINT => [ 10, 20 ] ], [ LINESTRING => [ [ 10, 20 ], [ 30, 40 ] ] ])
+  wkt_make_geometrycollection(
+      [ POINT => [ 10, 20 ] ], [ LINESTRING => [ [ 10, 20 ], [ 30, 40 ] ] ]
+  ); #=> 'GEOMETRYCOLLECTION(POINT(10 20), LINESTRING(10 20, 30 40))'
+
+
+  # If you don't like too many exported symbols:
+  use Geo::WKT::Simple qw/ wkt_parse wkt_make /;
+  wkt_parse(POINT => 'POINT(10 20)');
+  wkt_make(POINT => [ 10, 20 ]);
 
 =head1 DESCRIPTION
 
@@ -194,21 +233,89 @@ Geo::WKT returns results as a Geo::* instances which represents each type of geo
 
 =item - I need to support MULTI(LINESTRING|POLYGON).
 
+=back
+
 =head2 Caution
 
 This module does not check the syntax of WKT.
 
-Just apply regular expression to data which can extract elements from B<right> formatted WKT.
+Just apply regular expression to data which can extract elements from B<right formatted WKT>.
 
-So you must take the responsibility for the input datas.
+So you must take the responsibility for the input datas on your own.
 
-=back
+=head1 FUNCTIONS
+
+See SYNOPSIS section for usages.
+
+=head2 wkt_parse_point()
+
+Parse WKT Point string.
+
+=head2 wkt_parse_linestring()
+
+Parse WKT Linestring string.
+
+=head2 wkt_parse_multilinestring()
+
+Parse WKT MultiLinestring string.
+
+=head2 wkt_parse_polygon()
+
+Parse WKT Polygon string.
+
+=head2 wkt_parse_multipolygon()
+
+Parse WKT MultiPolygon string.
+
+=head2 wkt_parse_geometrycollection()
+
+Parse WKT GeometryCollection string.
+
+=head2 wkt_parse()
+
+Dispatch to parser which specified in first argument.
+
+  wkt_parse(POINT => 'POINT(10 20)') is equivalent to wkt_parse_point('POINT(10 20)')
+
+=head2 wkt_make_point()
+
+Build WKT Point string.
+
+=head2 wkt_make_linestring()
+
+Build WKT Linestring string.
+
+=head2 wkt_make_multilinestring()
+
+Build WKT MultiLinestring string.
+
+=head2 wkt_make_polygon()
+
+Build WKT Polygon string.
+
+=head2 wkt_make_multipolygon()
+
+Build WKT MultiPolygon string.
+
+=head2 wkt_make_geometrycollection()
+
+Build WKT GeometryCollection string.
+
+=head2 wkt_make()
+
+Dispatch to builder function which specified in first argument.
+
+  wkt_make(POINT => [ 10, 20 ]) is equivalent to wkt_make_point(10, 20)
 
 =head1 AUTHOR
 
 Yuto KAWAMURA(kawamuray) E<lt>kawamuray.dadada {at} gmail.comE<gt>
 
 =head1 SEE ALSO
+
+L<Geo::WKT>: As same as this module except few things.
+
+Well-known text: http://en.wikipedia.org/wiki/Well-known_text
 
 =head1 LICENSE
 
