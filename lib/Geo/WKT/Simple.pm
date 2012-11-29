@@ -98,7 +98,7 @@ sub wkt_parse_geometrycollection {
         while (1) {
             my @open  = $take =~ m/\(/g;
             my @close = $take =~ m/\)/g;
-            last if @open==@close;
+            last if @open == @close;
             $take .= $& if $wkt =~ s/^[^\)]*\)//;
         }
         my ($type) = $take =~ /^($ALLTYPES)/;
