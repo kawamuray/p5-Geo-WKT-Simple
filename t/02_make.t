@@ -8,7 +8,7 @@ subtest "Make POINT" => sub {
     is wkt_make_point(10, 20),     'POINT(10 20)';
     is wkt_make_point(12.5, 18.3), 'POINT(12.5 18.3)';
 
-    is wkt_make(POINT => 12.5, 18.3), 'POINT(12.5 18.3)';
+    is wkt_make(POINT => [ 12.5, 18.3 ]), 'POINT(12.5 18.3)';
 };
 
 subtest "Make LINESTRING" => sub {
@@ -21,10 +21,10 @@ subtest "Make LINESTRING" => sub {
         [ 30.2, 4.5 ],
     ), 'LINESTRING(10.5 20.8, 30.2 4.5)';
 
-    is wkt_make(LINESTRING =>
+    is wkt_make(LINESTRING => [
         [ 10, 20 ],
         [ 30, 40 ],
-    ), 'LINESTRING(10 20, 30 40)';
+    ]), 'LINESTRING(10 20, 30 40)';
 };
 
 subtest "Make MULTILINESTRING" => sub {
@@ -39,7 +39,7 @@ subtest "Make MULTILINESTRING" => sub {
         ],
     ), 'MULTILINESTRING((10 20, 30 40), (10.5 20.8, 30.2 4.5))';
 
-    is wkt_make(MULTILINESTRING =>
+    is wkt_make(MULTILINESTRING => [
         [
             [ 10, 20 ],
             [ 30, 40 ],
@@ -48,7 +48,7 @@ subtest "Make MULTILINESTRING" => sub {
             [ 10.5, 20.8 ],
             [ 30.2, 4.5 ],
         ],
-    ), 'MULTILINESTRING((10 20, 30 40), (10.5 20.8, 30.2 4.5))';
+    ]), 'MULTILINESTRING((10 20, 30 40), (10.5 20.8, 30.2 4.5))';
 };
 
 subtest "Make POLYGON" => sub {
@@ -75,14 +75,14 @@ subtest "Make POLYGON" => sub {
         ],
     ), 'POLYGON((10 20, 30 40, 50 60, 10 20), (2.5 3.5, 4.5 8.5, 9.5 10.5, 11.5 12.5))';
 
-    is wkt_make(POLYGON =>
+    is wkt_make(POLYGON => [
         [
             [ 10, 20 ],
             [ 30, 40 ],
             [ 50, 60 ],
             [ 10, 20 ],
         ],
-    ), 'POLYGON((10 20, 30 40, 50 60, 10 20))';
+    ]), 'POLYGON((10 20, 30 40, 50 60, 10 20))';
 };
 
 subtest "Make MULTIPOLYGON" => sub {
@@ -111,7 +111,7 @@ subtest "Make MULTIPOLYGON" => sub {
         ],
     ), 'MULTIPOLYGON(((10 20, 30 40, 50 60, 10 20)), ((10 20, 30 40, 50 60, 10 20), (2.5 3.5, 4.5 8.5, 9.5 10.5, 11.5 12.5)))';
 
-    is wkt_make(MULTIPOLYGON =>
+    is wkt_make(MULTIPOLYGON => [
         [
             [
                 [ 10, 20 ],
@@ -134,31 +134,35 @@ subtest "Make MULTIPOLYGON" => sub {
                 [ 11.5, 12.5 ],
             ],
         ],
-    ), 'MULTIPOLYGON(((10 20, 30 40, 50 60, 10 20)), ((10 20, 30 40, 50 60, 10 20), (2.5 3.5, 4.5 8.5, 9.5 10.5, 11.5 12.5)))';
+    ]), 'MULTIPOLYGON(((10 20, 30 40, 50 60, 10 20)), ((10 20, 30 40, 50 60, 10 20), (2.5 3.5, 4.5 8.5, 9.5 10.5, 11.5 12.5)))';
 };
 
 subtest "Make GEOMETRYCOLLECTION" => sub {
     is wkt_make_geometrycollection(
-        [ POINT      => 12.5, 20.8 ],
+        [ POINT      => [ 12.5, 20.8 ] ],
         [ POLYGON    => [
-            [ 10, 20 ],
-            [ 30, 40 ],
-            [ 50, 60 ],
-            [ 10, 20 ],
+            [
+                [ 10, 20 ],
+                [ 30, 40 ],
+                [ 50, 60 ],
+                [ 10, 20 ],
+            ]
         ]],
-        [ LINESTRING => [ 10.5, 20.8 ], [ 30.2, 4.5 ] ],
+        [ LINESTRING => [ [ 10.5, 20.8 ], [ 30.2, 4.5 ] ] ],
     ), 'GEOMETRYCOLLECTION(POINT(12.5 20.8), POLYGON((10 20, 30 40, 50 60, 10 20)), LINESTRING(10.5 20.8, 30.2 4.5))';
 
-    is wkt_make(GEOMETRYCOLLECTION =>
-        [ POINT      => 12.5, 20.8 ],
+    is wkt_make(GEOMETRYCOLLECTION => [
+        [ POINT      => [ 12.5, 20.8 ] ],
         [ POLYGON    => [
-            [ 10, 20 ],
-            [ 30, 40 ],
-            [ 50, 60 ],
-            [ 10, 20 ],
+            [
+                [ 10, 20 ],
+                [ 30, 40 ],
+                [ 50, 60 ],
+                [ 10, 20 ],
+            ],
         ]],
-        [ LINESTRING => [ 10.5, 20.8 ], [ 30.2, 4.5 ] ],
-    ), 'GEOMETRYCOLLECTION(POINT(12.5 20.8), POLYGON((10 20, 30 40, 50 60, 10 20)), LINESTRING(10.5 20.8, 30.2 4.5))';
+        [ LINESTRING => [ [ 10.5, 20.8 ], [ 30.2, 4.5 ] ] ],
+    ]), 'GEOMETRYCOLLECTION(POINT(12.5 20.8), POLYGON((10 20, 30 40, 50 60, 10 20)), LINESTRING(10.5 20.8, 30.2 4.5))';
     # TODO: Test for recursive structured geometry collection
 };
 
