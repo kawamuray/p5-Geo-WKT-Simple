@@ -129,6 +129,39 @@ sub wkt_parse {
     };
 }
 
+sub _pcat {
+    map { "@$_" } @_
+}
+
+sub _cat {
+    '('.join(', ', @_).')'
+}
+
+sub _catlinestring {
+    _cat( _pcat(@_) )
+}
+
+sub _catpolygon {
+    _cat( map { [ _pcat(@$_) ] } @_ );
+}
+
+sub wkt_point {
+    'POINT'._cat(@_)
+}
+
+sub wkt_linestring {
+    'LINESTRING'._catlinestring(@_)
+}
+
+sub wkt_multilinestring {
+    'MULTILINESTRING'._cat(
+        map {
+            _cat( map { "@{ $_ }" } @$_ )
+        } @_
+    )
+}
+
+
 1;
 __END__
 
