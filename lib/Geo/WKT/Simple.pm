@@ -1,7 +1,6 @@
 package Geo::WKT::Simple;
 use strict;
 use warnings;
-use utf8;
 
 use parent 'Exporter';
 
@@ -238,14 +237,6 @@ Geo::WKT returns results as a Geo::* instances which represents each type of geo
 =item - I need to support MULTI(LINESTRING|POLYGON).
 
 =back
-
-=head2 Caution
-
-This module does not check the syntax of WKT.
-
-Just apply regular expression to data which can extract elements from B<right formatted WKT>.
-
-So you must take the responsibility for the input datas on your own.
 
 =head1 FUNCTIONS
 
