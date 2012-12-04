@@ -31,43 +31,47 @@ our %EXPORT_TAGS = (
 );
 @EXPORT = map { @{ $_ } } @EXPORT_TAGS{qw/ parse make /};
 
-sub wkt_parse_point {
-    $_[0] =~ /^point\(\s*([\w\.]+)\s+([\w\.]+)\)$/i
+sub _parse_point {
+    $_[0] =~ /^\s*(\S+)\s+(\S+)\s*$/
 }
 
 sub _parse_points_list {
-    map {
-        [ split /\s+/, $_, 2 ]
-    } $_[0] =~ /([\w\.]+\s+[\w\.]+)(?:,\s*)?/g
+    map { [ _parse_point($_) ] } split /\s*,\s*/, $_[0]
 }
 
 sub _parse_points_group {
     map {
         [ _parse_points_list($_) ]
-    } $_[0] =~ /\(((?:[\w\.]+\s+[\w\.]+(?:,\s*)?)*)\)(?:,\s*)?/g
+    } split /\s*\)\s*,\s*\(\s*/, $_[0]
 }
 
 sub _parse_points_group_list {
     map {
         [ _parse_points_group($_) ]
-    } $_[0] =~ /\(((?:\((?:[\w\.]+\s+[\w\.]+(?:,\s*)?)*\)(?:,\s*)?)*)\)(?:,\s*)?/g
+    } split /\s*\)\s*\)\s*,\s*\(\s*\(\s*/, $_[0]
+}
+
+sub wkt_parse_point {
+    _parse_point(
+        $_[0] =~ /^point\s*\((.+)\)$/i
+    )
 }
 
 sub wkt_parse_linestring {
     _parse_points_list(
-        $_[0] =~ /^linestring\((.+)\)$/i,
+        $_[0] =~ /^linestring\s*\((.+)\)$/i,
     );
 }
 
 sub wkt_parse_multilinestring {
     _parse_points_group(
-        $_[0] =~ /^multilinestring\((.+)\)$/i
+        $_[0] =~ /^multilinestring\s*\(\s*\((.+)\)\s*\)$/i
     )
 }
 
 sub wkt_parse_polygon {
     my @groups = _parse_points_group(
-        $_[0] =~ /^polygon\((.+)\)$/i
+        $_[0] =~ /^polygon\s*\(\s*\((.+)\)\s*\)$/i
     );
 
     @groups;
@@ -75,7 +79,7 @@ sub wkt_parse_polygon {
 
 sub wkt_parse_multipolygon {
     my @groups_list = _parse_points_group_list(
-        $_[0] =~ /^multipolygon\((.+)\)$/i
+        $_[0] =~ /^multipolygon\s*\(\s*\(\s*\((.+)\)\s*\)\s*\)$/i
     );
 
     @groups_list;
@@ -83,7 +87,7 @@ sub wkt_parse_multipolygon {
 
 my $ALLTYPES = "(?:MULTI)?(?:POINT|LINESTRING|POLYGON)|GEOMETRYCOLLECTION";
 sub wkt_parse_geometrycollection {
-    my ($wkt) = $_[0] =~ /^GEOMETRYCOLLECTION\((.+)\)$/
+    my ($wkt) = $_[0] =~ /^geometrycollection\s*\((.+)\)$/i
         or return;
 
     # Copy from Geo::WKT
@@ -100,7 +104,7 @@ sub wkt_parse_geometrycollection {
         my ($type) = $take =~ /^($ALLTYPES)/;
         push @comps, [ uc($type) => [ wkt_parse($type => $take) ] ];
 
-        $wkt =~ s/^\s*\,\s*//;
+        $wkt =~ s/^\s*,\s*//;
     }
 
     @comps;
