@@ -92,12 +92,12 @@ sub wkt_parse_geometrycollection {
 
     # Copy from Geo::WKT
     my @comps;
-    while ($wkt =~ m/\D/) {
+    while ($wkt =~ /\D/) {
         last unless $wkt =~ s/^[^(]*\([^)]*\)//;
         my $take  = $&;
         while (1) {
-            my @open  = $take =~ m/\(/g;
-            my @close = $take =~ m/\)/g;
+            my @open  = $take =~ /\(/g;
+            my @close = $take =~ /\)/g;
             last if @open == @close;
             $take .= $& if $wkt =~ s/^[^\)]*\)//;
         }
