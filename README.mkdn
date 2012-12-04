@@ -61,14 +61,6 @@ Geo::WKT returns results as a Geo::\* instances which represents each type of ge
 - \- [Geo::Proj4](http://search.cpan.org/perldoc?Geo::Proj4) dependencies. [Geo::Proj4](http://search.cpan.org/perldoc?Geo::Proj4) depends to libproj4
 - \- I need to support MULTI(LINESTRING|POLYGON).
 
-## Caution
-
-This module does not check the syntax of WKT.
-
-Just apply regular expression to data which can extract elements from __right formatted WKT__.
-
-So you must take the responsibility for the input datas on your own.
-
 # FUNCTIONS
 
 See SYNOPSIS section for usages.
