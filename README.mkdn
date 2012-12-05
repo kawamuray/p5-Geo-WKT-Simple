@@ -48,13 +48,13 @@ Geo::WKT::Simple - Simple utils to parse/build Well Known Text(WKT) format strin
 
 # DESCRIPTION
 
-Geo::WKT::Simple is a module to provide simple parser for Well Known Text(WKT) format string.
+Geo::WKT::Simple is a module to provide simple parser/builder for Well Known Text(WKT) format string.
 
-This module can parse WKT format string into pure perl data structure.
+This module can parse/build WKT format string into/from pure perl data structure.
 
 ## Why not [Geo::WKT](http://search.cpan.org/perldoc?Geo::WKT) ?
 
-There is a few reasons.
+There is few reasons.
 
 - \- I just need simple return value represented by pure perl data structure.
 Geo::WKT returns results as a Geo::\* instances which represents each type of geodetic components.

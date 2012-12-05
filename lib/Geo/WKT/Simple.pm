@@ -220,13 +220,13 @@ Geo::WKT::Simple - Simple utils to parse/build Well Known Text(WKT) format strin
 
 =head1 DESCRIPTION
 
-Geo::WKT::Simple is a module to provide simple parser for Well Known Text(WKT) format string.
+Geo::WKT::Simple is a module to provide simple parser/builder for Well Known Text(WKT) format string.
 
-This module can parse WKT format string into pure perl data structure.
+This module can parse/build WKT format string into/from pure perl data structure.
 
 =head2 Why not L<Geo::WKT> ?
 
-There is a few reasons.
+There is few reasons.
 
 =over
 
