@@ -9,6 +9,9 @@ subtest "Parse POINT" => sub {
     is_deeply [ wkt_parse_point('POINT(10.0 20.0)') ], [ '10.0', '20.0' ];
 
     is_deeply [ wkt_parse(POINT => 'POINT(10 20)') ],  [ 10, 20 ];
+
+    # Invalid WKT
+    ok ! wkt_parse_point('POINT(10 20');
 };
 
 subtest "Parse LINESTRING" => sub {
@@ -23,6 +26,9 @@ subtest "Parse LINESTRING" => sub {
     is_deeply [ wkt_parse(LINESTRING => 'LINESTRING(10 20)') ], [
         [ 10, 20 ],
     ];
+
+    # Invalid WKT
+    ok ! wkt_parse_linestring('LINESTRING(10 20');
 };
 
 subtest "Parse MULTILINESTRING" => sub {
@@ -44,6 +50,9 @@ subtest "Parse MULTILINESTRING" => sub {
     is_deeply [ wkt_parse(MULTILINESTRING => 'MULTILINESTRING((10 20))') ], [
         [ [ 10, 20 ] ],
     ];
+
+    # Invalid WKT
+    ok ! wkt_parse_multilinestring('LINESTRING((10 20)');
 };
 
 subtest "Parse POLYGON" => sub {
@@ -78,6 +87,9 @@ subtest "Parse POLYGON" => sub {
             [ 10, 20 ],
         ],
     ];
+
+    # Invalid WKT
+    ok ! wkt_parse_polygon('POLYGON((10 20)');
 };
 
 subtest "Parse MULTIPOLYGON" => sub {
@@ -126,6 +138,9 @@ subtest "Parse MULTIPOLYGON" => sub {
             ],
         ],
     ];
+
+    # Invalid WKT
+    ok ! wkt_parse_polygon('MULTIPOLYGON(((10 20))');
 };
 
 subtest "Parse GEOMETRYCOLLECTION" => sub {
@@ -144,6 +159,8 @@ subtest "Parse GEOMETRYCOLLECTION" => sub {
         [ POINT      => [ 10, 20 ]                                                 ],
         [ LINESTRING => [ [ 10, 20 ], [ 30, 40 ] ]                                 ],
     ];
+
+    ok ! wkt_parse_geometrycollection('GEOMETRYCOLLECTION(POINT(10 20)');
 };
 
 subtest "Invalid(or not supported) type of wkt should denied" => sub {

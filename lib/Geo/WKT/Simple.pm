@@ -51,37 +51,38 @@ sub _parse_points_group_list {
 }
 
 sub wkt_parse_point {
-    _parse_point(
-        $_[0] =~ /^point\s*\((.+)\)$/i
-    )
+    my ($data) = $_[0] =~ /^point\s*\((.+)\)$/i
+        or return;
+
+    _parse_point($data);
 }
 
 sub wkt_parse_linestring {
-    _parse_points_list(
-        $_[0] =~ /^linestring\s*\((.+)\)$/i,
-    );
+    my ($data) = $_[0] =~ /^linestring\s*\((.+)\)$/i
+        or return;
+
+    _parse_points_list($data);
 }
 
 sub wkt_parse_multilinestring {
-    _parse_points_group(
-        $_[0] =~ /^multilinestring\s*\(\s*\((.+)\)\s*\)$/i
-    )
+    my ($data) = $_[0] =~ /^multilinestring\s*\(\s*\((.+)\)\s*\)$/i
+        or return;
+
+    _parse_points_group($data);
 }
 
 sub wkt_parse_polygon {
-    my @groups = _parse_points_group(
-        $_[0] =~ /^polygon\s*\(\s*\((.+)\)\s*\)$/i
-    );
+    my ($data) = $_[0] =~ /^polygon\s*\(\s*\((.+)\)\s*\)$/i
+        or return;
 
-    @groups;
+    _parse_points_group($data);
 }
 
 sub wkt_parse_multipolygon {
-    my @groups_list = _parse_points_group_list(
-        $_[0] =~ /^multipolygon\s*\(\s*\(\s*\((.+)\)\s*\)\s*\)$/i
-    );
+    my ($data) = $_[0] =~ /^multipolygon\s*\(\s*\(\s*\((.+)\)\s*\)\s*\)$/i
+        or return;
 
-    @groups_list;
+    _parse_points_group_list($data);
 }
 
 my $ALLTYPES = 'POINT|(?:MULTI)?(?:LINESTRING|POLYGON)|GEOMETRYCOLLECTION';
