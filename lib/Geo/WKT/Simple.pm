@@ -4,7 +4,7 @@ use warnings;
 
 use parent 'Exporter';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our @EXPORT;
 our %EXPORT_TAGS = (
@@ -84,7 +84,7 @@ sub wkt_parse_multipolygon {
     @groups_list;
 }
 
-my $ALLTYPES = "(?:MULTI)?(?:POINT|LINESTRING|POLYGON)|GEOMETRYCOLLECTION";
+my $ALLTYPES = 'POINT|(?:MULTI)?(?:LINESTRING|POLYGON)|GEOMETRYCOLLECTION';
 sub wkt_parse_geometrycollection {
     my ($wkt) = $_[0] =~ /^geometrycollection\s*\((.+)\)$/i
         or return;
@@ -112,7 +112,7 @@ sub wkt_parse_geometrycollection {
 sub wkt_parse {
     my ($type, $wkt) = @_;
 
-    return if uc($type) !~ /^$ALLTYPES$/;
+    return if $type !~ /^$ALLTYPES$/i;
     do {
         no strict 'refs';
         &{ 'wkt_parse_'.lc($type) }($_[1]);
@@ -159,8 +159,8 @@ sub wkt_make_geometrycollection {
 
 sub wkt_make {
     my ($type, $data) = @_;
-    return if $type !~ $ALLTYPES;
 
+    return if $type !~ /^$ALLTYPES$/i;
     do {
         no strict 'refs';
         &{ 'wkt_make_'.lc($type) }(@$data);

@@ -166,4 +166,8 @@ subtest "Make GEOMETRYCOLLECTION" => sub {
     # TODO: Test for recursive structured geometry collection
 };
 
+subtest "Invalid(or not supported) type of wkt should denied" => sub {
+    is wkt_make(MULTIPOINT => []), undef;
+};
+
 done_testing;

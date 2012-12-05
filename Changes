@@ -1,4 +1,7 @@
 Change history of Geo::WKT::Simple
 
+0.02  Tue Dec  5 11:26:07 2012
+        - Fix bug around WKT type verification
+
 0.01  Tue Dec  4 12:50:43 2012
         - Initial release

@@ -146,5 +146,9 @@ subtest "Parse GEOMETRYCOLLECTION" => sub {
     ];
 };
 
+subtest "Invalid(or not supported) type of wkt should denied" => sub {
+    is wkt_parse(MULTIPOINT => 'hoge'), undef;
+};
+
 
 done_testing;
