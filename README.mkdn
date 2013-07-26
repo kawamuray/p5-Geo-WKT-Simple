@@ -24,10 +24,10 @@ Geo::WKT::Simple - Simple utils to parse/build Well Known Text(WKT) format strin
     #      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
     #      [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
     #   )
-    wkt_make_polygon([
+    wkt_make_polygon(
         [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
         [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 1, 2 ] ],
-    ]) #=> 'POLYGON((1 2, 3 4, 5 6, 1 2), (1 2, 3 4, 5 6, 1 2))'
+    ); #=> 'POLYGON((1 2, 3 4, 5 6, 1 2), (1 2, 3 4, 5 6, 1 2))'
 
     # And like so on for (MULTI)LINESTRING|POLYGON
 
