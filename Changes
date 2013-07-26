@@ -1,5 +1,9 @@
 Change history of Geo::WKT::Simple
 
+0.04  Fri Jul 26 11:43:03 2013
+        - Fix document bug (thanks to James)
+        - Refactor
+
 0.03  Tue Dec  5 13:27:00 2012
         - There was no META.yml included. Little fix for docs.
 
