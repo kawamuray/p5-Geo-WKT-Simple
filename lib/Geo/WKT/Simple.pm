@@ -101,7 +101,7 @@ sub wkt_parse_geometrycollection {
             last if @open == @close;
             $take .= $& if $wkt =~ s/^[^\)]*\)//;
         }
-        my ($type) = $take =~ /^($ALLTYPES)/;
+        my ($type) = $take =~ /^($ALLTYPES)/i;
         push @comps, [ uc($type) => [ wkt_parse($type => $take) ] ];
 
         $wkt =~ s/^\s*,\s*//;
