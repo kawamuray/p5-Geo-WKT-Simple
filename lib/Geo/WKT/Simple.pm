@@ -114,10 +114,7 @@ sub wkt_parse {
     my ($type, $wkt) = @_;
 
     return if $type !~ /^$ALLTYPES$/i;
-    do {
-        no strict 'refs';
-        &{ 'wkt_parse_'.lc($type) }($_[1]);
-    };
+    __PACKAGE__->can('wkt_parse_'.lc($type))->($wkt);
 }
 
 sub _cat {
@@ -162,10 +159,7 @@ sub wkt_make {
     my ($type, $data) = @_;
 
     return if $type !~ /^$ALLTYPES$/i;
-    do {
-        no strict 'refs';
-        &{ 'wkt_make_'.lc($type) }(@$data);
-    };
+    __PACKAGE__->can('wkt_make_'.lc($type))->(@$data);
 }
 
 1;
