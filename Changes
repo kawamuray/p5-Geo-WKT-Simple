@@ -1,5 +1,9 @@
 Change history of Geo::WKT::Simple
 
+0.05  Mon Jul 29 10:41:39 JST 2013
+        - Fix README.mkdn
+        - Add dependency parent(thanks to shohex)
+
 0.04  Fri Jul 26 11:43:03 2013
         - Fix document bug (thanks to James)
         - Refactor
